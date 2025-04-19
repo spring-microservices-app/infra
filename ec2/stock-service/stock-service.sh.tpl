@@ -20,6 +20,9 @@ sudo aws s3 cp s3://my-jar-repository/stock-trading-server-0.0.1-SNAPSHOT.jar /o
 
 # Create application.yml
 cat > application.yml <<EOF
+server:
+  port: 8081
+
 spring:
   application:
     name: stock-service
@@ -31,6 +34,7 @@ spring:
 grpc:
   server:
     port: 9090
+    enable-reflection: true
 
 eureka:
   client:
@@ -38,9 +42,10 @@ eureka:
       defaultZone: ${EUREKA_URL}
   instance:
     non-secure-port: 9090
+    non-secure-port-enabled: false
 EOF
 
 # Run the JAR
-# nohup java -jar app.jar --spring.config.location=application.yml > log.txt 2>&1 &
-sudo nohup java -jar /opt/stock-service/app.jar --spring.config.location=/opt/stock-service/application.yml > /opt/stock-service/log.txt 2>&1 &
+sudo nohup java -jar app.jar --spring.config.location=application.yml > log.txt 2>&1 &
+# sudo nohup java -jar /opt/stock-service/app.jar --spring.config.location=/opt/stock-service/application.yml > /opt/stock-service/log.txt 2>&1 &
 
